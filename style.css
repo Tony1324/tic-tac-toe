@@ -1,0 +1,56 @@
+:root{
+    --x-color-primary: #D45757;
+    --x-color-shadow: #D4575740;
+    --o-color-primary: #373434;
+    --o-color-shadow: #37343420;
+}
+
+.box-container{
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
+}
+
+
+.box {
+    background: transparent;
+    transition: background 0.3s ease, border-radius 0.5s ease, border 0.5s ease, transform 0.2s ease, width 0.2s ease, height 0.2s ease, margin 0.2s ease;
+    padding: 0;
+}
+
+.box.square {
+    margin: 15px;
+    width: 70px;
+    height: 70px;
+    border: 1px solid var(--x-color-primary);
+    filter: drop-shadow(12px 12px 0px var(--x-color-shadow));
+    border-radius: 15px;
+}
+
+.box.circle {
+    margin: 12.5px;
+    width: 75px;
+    height: 75px;
+    border: 1px solid var(--o-color-primary);
+    filter: drop-shadow(12px 12px 0px var(--o-color-shadow));
+    border-radius: 50%;
+}
+
+
+.box:hover {
+    border-width: 5px;
+}
+
+.box:active {
+    transform: scale(0.9);
+}
+
+.box.square.filled {
+    border: 35px solid var(--x-color-primary);
+    background: var(--x-color-primary);
+}
+
+.box.circle.filled {
+    border: 18px solid var(--o-color-primary);
+}
+
