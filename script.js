@@ -39,6 +39,8 @@ function makeMove(x, y) {
             let point = win[0]
             let isX = board[point.x][point.y] == "square-filled"
             updateTitle(isX ? "X WINS" : "O WINS", isX)
+        } else if (step >= 9) {
+            updateTitle("DRAW", false)
         } else {
             updateTitle(step % 2 == 0 ? "X'S TURN" : "O'S TURN", step % 2 == 0)
         }
