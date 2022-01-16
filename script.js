@@ -39,15 +39,19 @@ function makeMove(x, y) {
             let point = win[0]
             let isX = board[point.x][point.y] == "square-filled"
             updateTitle(isX ? "X WINS" : "O WINS", isX)
+
+            //moved this inside the check win section, so it wouldn't update every move
+            setTimeout(() => {
+                updateBoard()
+            }, 1000)
+
         } else if (step >= 9) {
+            //added conditional to check for draws
             updateTitle("DRAW", false)
         } else {
             updateTitle(step % 2 == 0 ? "X'S TURN" : "O'S TURN", step % 2 == 0)
         }
 
-        setTimeout(() => {
-            updateBoard()
-        }, 1000)
     }
 }
 
@@ -97,12 +101,40 @@ function updateBoard() {
     }
 }
 
+//here is a bit more change, essentially there is a graphics glitch were if you click too fast (quicker than the settimeout completes)
+//it will cause the title to snap to the second one with no transition
+//solution is to make a queue with an array, and ensure that the titles animate one after the other
+//this will technically cause it to lag behind, but unless you are playing way faster than possible, it should be fine
 
-function updateTitle(title, isX) {
+let titles = []
+
+
+//new function that pushes a title to the queue
+function updateTitle(name, isX) {
+    let length = titles.length
+    titles.push({ name: name, isX: isX })
+
+    //if the array was empty before we added a title, we need to call the function again
+
+
+    if (length == 0) {
+        updateIndividualTitle()
+    }
+}
+
+//og function got renamed to updateIndividualTitle
+function updateIndividualTitle() {
+    //get first element in array
+    let title = titles[0]
+
+
+    console.log(title);
+
     let status1 = document.querySelector("#status-1")
     let status2 = document.querySelector("#status-2")
-    status2.innerHTML = title
-    status2.className = isX ? "x" : "o"
+    //title has been renamed to title.name, isX is renamed to title.isX
+    status2.innerHTML = title.name
+    status2.className = title.isX ? "x" : "o"
     status1.style.transition = "left 0.5s ease"
     status2.style.transition = "left 0.5s ease"
     status1.style.left = "-50%"
@@ -112,9 +144,23 @@ function updateTitle(title, isX) {
         status2.style.transition = ""
         status1.style.left = "50%"
         status2.style.left = "200%"
-        status1.innerHTML = title
-        status1.className = isX ? "x" : "o"
+        //same here
+        status1.innerHTML = title.name
+        status1.className = title.isX ? "x" : "o"
+
+        //remove first element of title after we're done
+        titles.shift()
+
+        //check if there is more items in the array, if yes, call it again
+        if (titles.length > 0) {
+            //request animation frame basically just waits one frame before calling the function again
+            //this way the resetting part of the funciton in the setTimeout is not called the same frame as when the function is called again
+            //if you remove the request animation frame, the transitions will not work properly
+            requestAnimationFrame(updateIndividualTitle)
+        }
     }, 500)
+
+
 }
 
 function restart() {
