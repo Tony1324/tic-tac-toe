@@ -60,6 +60,14 @@ html, body{
     background-color: var(--background-color);
 }
 
+/*if view is small, scale down a bit*/
+/* if width or height is less than 600px*/
+@media screen and (max-width: 600px), screen and (max-height: 800px){
+    html, body{
+        zoom: 0.9;
+    }
+}
+    
 .main-container{
     width: 100%;
     height: 100%;
@@ -144,33 +152,49 @@ header select{
 }
 
 
-.box {
+
+/*drop shadow is causing graphical glitches on non-chrome browsers, so I decided to use pseudo-elements instead*/
+/*the pseudo-element basically creates a shadow by making a copy of the element */
+
+.box, .box::after{
     background: transparent;
-    transition: background 0.3s ease, border-radius 0.5s ease, border 0.5s ease,transform 0.2s ease, width 0.2s ease, height 0.2s ease, margin 0.2s ease;
+    transition: background 0.3s ease, border-radius 0.4s ease, border 0.3s ease,transform 0.2s ease, width 0.2s ease, height 0.2s ease, margin 0.2s ease;
     padding: 0;
 }
+.box::after{
+    content: "";
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    opacity: 0.3;
+    box-sizing: border-box;
+}
 
-.box.square {
+
+.box.square, .box.square::after{
     margin: 15px;
     width: 70px;
     height: 70px;
     border: 1px solid var(--x-color-primary);
-    filter: drop-shadow(12px 12px 0px var(--x-color-shadow));
+    /* filter: drop-shadow(12px 12px 0px var(--x-color-shadow)); */
     border-radius: 15px;
 }
 
-.box.circle {
+.box.circle, .box.circle::after {
     margin: 12.5px;
     width: 75px;
     height: 75px;
     border: 1px solid var(--o-color-primary);
-    filter: drop-shadow(12px 12px 0px var(--o-color-shadow));
+    /* filter: drop-shadow(12px 12px 0px var(--o-color-shadow)); */
     border-radius: 50%;
 }
 
 
-.box:hover {
+.box:hover, .box:hover::after{
     border-width: 5px;
+}
+
+.box:active, .box:active::after{
+    border-width: 10px;
 }
 
 button,select{
@@ -181,16 +205,16 @@ button:not(.box):hover, select:hover{
     transform: scale(1.1);
 }
 
-button:active , select:active{
-    transform: scale(0.9) !important;
+button:not(.box):active , select:not(.box):active{
+    transform: scale(0.9);
 }
 
-.box.square.filled {
+.box.square.filled, .box.square.filled::after {
     border: 35px solid var(--x-color-primary);
     background: var(--x-color-primary);
 }
 
-.box.circle.filled {
+.box.circle.filled, .box.circle.filled::after {
     border: 18px solid var(--o-color-primary);
 }
 
