@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;900&display=swap');
+
+:root{
+    --background-color: white;
+    --x-color-primary: #D45757;
+    --x-color-shadow: #D4575740;
+    --o-color-primary: #373434;
+    --o-color-shadow: #37343420;
+}
+
+[color-scheme="default-dark"]{
+    --background-color: #262D3C;
+    --x-color-primary: #D45757;
+    --x-color-shadow: #D4575740;
+    --o-color-primary: white;
+    --o-color-shadow: #FFFFFF10;
+}
+
+[color-scheme="mono-light"]{
+    --background-color: white;
+    --x-color-primary: black;
+    --x-color-shadow: #00000020;
+    --o-color-primary: black;
+    --o-color-shadow: #00000020;
+}
+
+[color-scheme="mono-dark"]{
+    --background-color: black;
+    --x-color-primary: white;
+    --x-color-shadow: #FFFFFF30;
+    --o-color-primary: white;
+    --o-color-shadow: #FFFFFF30;
+}
+
+[color-scheme="solarized-light"]{
+    --background-color: #FDF6E3;
+    --x-color-primary: #CB4B16;
+    --x-color-shadow: #CB4B1635;
+    --o-color-primary: #586E75;
+    --o-color-shadow: #586E7540;
+}
+
+[color-scheme="solarized-dark"]{
+    --background-color: #073642;
+    --x-color-primary: #CB4B16;
+    --x-color-shadow: #CB4B1640;
+    --o-color-primary: #eee8d5;
+    --o-color-shadow: #eee8d520;
+}
+
+
+
+html, body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "Poppins", sans-serif;
+    color:var(--o-color-primary);
+    background-color: var(--background-color);
+}
+
+/*if view is small, scale down a bit*/
+/* if width or height is less than 600px*/
+@media screen and (max-width: 600px), screen and (max-height: 800px){
+    html, body{
+        zoom: 0.9;
+    }
+}
+    
+.main-container{
+    width: 100%;
+    height: 100%;
+    padding: 40px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.spacer{
+    flex-grow: 1;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header h3{
+    font-weight: 500;
+    margin: 5px
+}
+
+.theme-button{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin: 5px;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,0.2)
+}
+
+header select{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    background: none;
+    border: 1px solid var(--x-color-primary);
+    color: var(--x-color-primary)
+}
+
+.status-container{
+    position: relative;
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+}
+
+.status-container h1{
+    position: absolute;
+    font-size: 45px;
+    font-weight: 900;
+    white-space: nowrap;
+    margin: 0;
+    transform: translateX(-50%);
+
+}
+
+.status-container h1.x {color: var(--x-color-primary)}
+.status-container h1.o {color: var(--o-color-primary)}
+
+#restart {
+    background-color: var(--o-color-primary);
+    padding: 5px 15px;
+    border-radius: 100px;
+    border: none;
+    color: var(--background-color);
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.box-container{
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px;
+}
+
+
+
+/*drop shadow is causing graphical glitches on non-chrome browsers, so I decided to use pseudo-elements instead*/
+/*the pseudo-element basically creates a shadow by making a copy of the element */
+
+.box, .box::after{
+    background: transparent;
+    transition: background 0.3s ease, border-radius 0.4s ease, border 0.3s ease,transform 0.2s ease, width 0.2s ease, height 0.2s ease, margin 0.2s ease;
+    padding: 0;
+}
+.box::after{
+    content: "";
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    opacity: 0.3;
+    box-sizing: border-box;
+}
+
+
+.box.square, .box.square::after{
+    margin: 15px;
+    width: 70px;
+    height: 70px;
+    border: 1px solid var(--x-color-primary);
+    /* filter: drop-shadow(12px 12px 0px var(--x-color-shadow)); */
+    border-radius: 15px;
+}
+
+.box.circle, .box.circle::after {
+    margin: 12.5px;
+    width: 75px;
+    height: 75px;
+    border: 1px solid var(--o-color-primary);
+    /* filter: drop-shadow(12px 12px 0px var(--o-color-shadow)); */
+    border-radius: 50%;
+}
+
+
+.box:hover, .box:hover::after{
+    border-width: 5px;
+}
+
+.box:active, .box:active::after{
+    border-width: 10px;
+}
+
+button,select{
+    transition: transform 0.2s ease;
+}
+
+button:not(.box):hover, select:hover{
+    transform: scale(1.1);
+}
+
+button:not(.box):active , select:not(.box):active{
+    transform: scale(0.9);
+}
+
+.box.square.filled, .box.square.filled::after {
+    border: 35px solid var(--x-color-primary);
+    background: var(--x-color-primary);
+}
+
+.box.circle.filled, .box.circle.filled::after {
+    border: 18px solid var(--o-color-primary);
+}
+

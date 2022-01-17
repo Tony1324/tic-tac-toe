@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <h3>Tic Tac Toe</h3>
+            <div class="themes-container">
+                <button class="theme-button" onclick="document.documentElement.setAttribute('color-scheme','default-light')" style="background-color: #D45757"></button>
+                <button class="theme-button" onclick="document.documentElement.setAttribute('color-scheme','default-dark')" style="background-color: #262D3C"></button>
+                <button class="theme-button" onclick="document.documentElement.setAttribute('color-scheme','mono-light')" style="background-color: white"></button>
+                <button class="theme-button" onclick="document.documentElement.setAttribute('color-scheme','mono-dark')" style="background-color: black"></button>
+                <button class="theme-button" onclick="document.documentElement.setAttribute('color-scheme','solarized-light')" style="background-color: #FDF6E3"></button>
+                <button class="theme-button" onclick="document.documentElement.setAttribute('color-scheme','solarized-dark')" style="background-color: #073642"></button>
+            </div>
+            <select id="player-select">
+                <option value="1">1 player</option>
+                <option value="2">2 player</option>
+            </select>
+        </header>
+        <div class="spacer"></div>
+        <div class="status-container">
+            <h1 id="status-1" class="x" style="left: 50%">X'S TURN</h1>
+            <h1 id="status-2" class="o" style="left: 200%">O'S TURN</h1>
+        </div>
+        <div class="box-container">
+            <button id="0-0" class="box square" onclick="makePlayerMove(0,0)"></button>
+            <button id="0-1" class="box square" onclick="makePlayerMove(0,1)"></button>
+            <button id="0-2" class="box square" onclick="makePlayerMove(0,2)"></button>
+            <button id="1-0" class="box square" onclick="makePlayerMove(1,0)"></button>
+            <button id="1-1" class="box square" onclick="makePlayerMove(1,1)"></button>
+            <button id="1-2" class="box square" onclick="makePlayerMove(1,2)"></button>
+            <button id="2-0" class="box square" onclick="makePlayerMove(2,0)"></button>
+            <button id="2-1" class="box square" onclick="makePlayerMove(2,1)"></button>
+            <button id="2-2" class="box square" onclick="makePlayerMove(2,2)"></button>
+        </div>
+        <div class="spacer" style="flex-grow: 2"></div>
+        <button id="restart" onclick="restart()">Restart</button>
+    </div>
+</body>
+</html>
