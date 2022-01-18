@@ -3,6 +3,24 @@ let board = Array(3).fill(0).map(() => Array(3).fill("square-empty"));
 let step = 0;
 let hasWon = false
 
+let is2player = false
+let playerSelect = document.querySelector("#player-select")
+
+playerSelect.addEventListener("change", () => {
+    console.log(playerSelect.value);
+    if (playerSelect.value == "2") {
+        is2player = true
+    } else {
+        is2player = false
+    }
+})
+
+function makePlayerMove(x, y) {
+    if (step % 2 == 0 || is2player) {
+        makeMove(x, y)
+    }
+}
+
 function makeMove(x, y) {
     if ((board[x][y] == "square-empty" || board[x][y] == "circle-empty") && !hasWon) {
         board[x][y] = step % 2 == 0 ? "square-filled" : "circle-filled";
@@ -18,7 +36,7 @@ function makeMove(x, y) {
 
         updateBoard();
 
-        let win = checkWin()
+        let win = checkWin(board)
         if (win) {
             hasWon = true
             for (let i in board) {
@@ -49,13 +67,19 @@ function makeMove(x, y) {
             //added conditional to check for draws
             updateTitle("DRAW", false)
         } else {
+            if (!is2player && step % 2 == 1) {
+                setTimeout(() => {
+                    let move = MiniMax(board, step).move
+                    makeMove(move.x, move.y)
+                }, 500)
+            }
             updateTitle(step % 2 == 0 ? "X'S TURN" : "O'S TURN", step % 2 == 0)
         }
 
     }
 }
 
-function checkWin() {
+function checkWin(board) {
     let lines = [
         [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }],
         [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 2 }],
@@ -76,6 +100,53 @@ function checkWin() {
             return line
         }
     }
+}
+
+function getWinner(board) {
+    let win = checkWin(board)
+    if (win) {
+        let point = win[0]
+        let isX = board[point.x][point.y] == "square-filled"
+        return isX ? 1 : -1
+    }
+}
+
+function copyBoard(board) {
+    return board.map(row => row.slice())
+}
+
+function MiniMax(board, step) {
+
+    let score = getWinner(board)
+    if (score) return { score: score * -1 }
+    if (step == 9) return { score: 0 }
+
+    let bestScore = step % 2 == 0 ? -Infinity : Infinity
+    let bestMove = {}
+    for (let i in board) {
+        for (let j in board[i]) {
+            if (board[i][j] == "square-empty" || board[i][j] == "circle-empty") {
+                let copiedBoard = copyBoard(board)
+                copiedBoard[i][j] = step % 2 == 0 ? "square-filled" : "circle-filled"
+                let result = MiniMax(copiedBoard, step + 1)
+                let score = result.score
+                if (step % 2 == 0) {
+                    if (score > bestScore) {
+                        bestScore = score
+                        bestMove = { x: i, y: j }
+                    }
+                } else {
+                    if (score < bestScore) {
+                        bestScore = score
+                        bestMove = { x: i, y: j }
+                    }
+                }
+            }
+        }
+    }
+
+    return { score: bestScore, move: bestMove }
+
 }
 
 function updateBoard() {
@@ -128,8 +199,6 @@ function updateIndividualTitle() {
     let title = titles[0]
 
 
-    console.log(title);
-
     let status1 = document.querySelector("#status-1")
     let status2 = document.querySelector("#status-2")
     //title has been renamed to title.name, isX is renamed to title.isX
@@ -170,6 +239,7 @@ function restart() {
     updateTitle("X'S TURN", true)
     updateBoard();
 }
+
 
 
 
