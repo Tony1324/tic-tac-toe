@@ -118,7 +118,7 @@ function copyBoard(board) {
 function MiniMax(board, step) {
 
     let score = getWinner(board)
-    if (score) return { score: score * -1 }
+    if (score) return { score }
     if (step == 9) return { score: 0 }
 
     let bestScore = step % 2 == 0 ? -Infinity : Infinity
